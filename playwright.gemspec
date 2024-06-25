@@ -8,12 +8,14 @@ Gem::Specification.new do |spec|
   spec.name          = 'playwright-ruby-client'
   spec.version       = Playwright::VERSION
 
-  spec.authors       = ['YusukeIwaki']
-  spec.email         = ['q7w8e9w8q7w8e9@yahoo.co.jp']
+  spec.authors       = ['Charlton Trezevant']
+  spec.email         = ['charlton@packfiles.io']
 
   spec.summary       = "The Ruby binding of playwright driver #{Playwright::COMPATIBLE_PLAYWRIGHT_VERSION}"
-  spec.homepage      = 'https://github.com/YusukeIwaki/playwright-ruby-client'
+  spec.homepage      = 'https://github.com/packfiles/playwright-ruby-client'
   spec.license       = 'MIT'
+
+  spec.metadata["github_repo"] = 'https://github.com/packfiles/playwright-ruby-client'
 
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|

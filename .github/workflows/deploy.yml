@@ -1,14 +1,25 @@
 name: Deploy
 
+permissions:
+  actions: read
+  contents: read
+  checks: read
+  packages: write
+  statuses: write
+
+
 on:
+  release:
+    types: [published]
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.beta[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+.alpha[0-9]+'
+
 jobs:
-  push_to_rubygems:
-    name: Push to RubyGems
+  push_to_github_packages:
+    name: Push to Packfiles GitHub Packages
     runs-on: ubuntu-latest
     steps:
     - name: Set RELEASE_TAG
@@ -24,12 +35,16 @@ jobs:
       run: |
         bundle exec ruby development/generate_api.rb
         rake build
-    - name: setup API key
+    - name: Set GitHub Packages API Key
       run: |
-        mkdir -p ~/.gem/
-        echo "---" > ~/.gem/credentials
-        echo ":rubygems_api_key: $RUBYGEMS_API_KEY" >> ~/.gem/credentials
-        chmod 600 ~/.gem/credentials
-      env:
-        RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
-    - run: gem push pkg/playwright-ruby-client-$RELEASE_TAG.gem
+        set +x
+        mkdir -p ~/.gem
+        cat << EOF > ~/.gem/credentials
+        ---
+        :github: Bearer ${{ secrets.GITHUB_TOKEN }}
+        EOF
+
+        chmod 0600 ~/.gem/credentials
+        set -x
+
+    - run: gem push pkg/playwright-ruby-client-$RELEASE_TAG.gem --key github --host "https://rubygems.pkg.github.com/packfiles"

@@ -6,8 +6,10 @@
 
 ## Getting Started
 
-```
-gem 'playwright-ruby-client'
+```ruby
+source 'https://rubygems.pkg.github.com/packfiles' do
+  gem 'playwright-ruby-client'
+end
 ```
 
 and then 'bundle install'.
