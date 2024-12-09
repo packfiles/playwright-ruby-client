@@ -84,6 +84,49 @@ The following example finds a button with a specific title.
 button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ```
 
+## aria_snapshot
+
+```
+def aria_snapshot(timeout: nil)
+```
+
+
+Captures the aria snapshot of the given element.
+Read more about [aria snapshots](https://playwright.dev/python/docs/aria-snapshots) and [LocatorAssertions#to_match_aria_snapshot](./locator_assertions#to_match_aria_snapshot) for the corresponding assertion.
+
+**Usage**
+
+```ruby
+page.get_by_role("link").aria_snapshot
+```
+
+**Details**
+
+This method captures the aria snapshot of the given element. The snapshot is a string that represents the state of the element and its children.
+The snapshot can be used to assert the state of the element in the test, or to compare it to state in the future.
+
+The ARIA snapshot is represented using [YAML](https://yaml.org/spec/1.2.2/) markup language:
+- The keys of the objects are the roles and optional accessible names of the elements.
+- The values are either text content or an array of child elements.
+- Generic static text can be represented with the `text` key.
+
+Below is the HTML markup and the respective ARIA snapshot:
+
+```html
+<ul aria-label="Links">
+  <li><a href="/">Home</a></li>
+  <li><a href="/about">About</a></li>
+<ul>
+```
+
+```yml
+- list "Links":
+  - listitem:
+    - link "Home"
+  - listitem:
+    - link "About"
+```
+
 ## blur
 
 ```
@@ -147,7 +190,6 @@ Performs the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now checked. If not, this method throws.
 
 If the element is detached from the DOM at any moment during the action, this method throws.
@@ -267,7 +309,6 @@ This method double clicks the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to double click in the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will throw.
 
 If the element is detached from the DOM at any moment during the action, this method throws.
 
@@ -816,7 +857,6 @@ This method hovers over the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to hover over the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 
 If the element is detached from the DOM at any moment during the action, this method throws.
 
@@ -1019,7 +1059,9 @@ def or(locator)
 ```
 
 
-Creates a locator that matches either of the two locators.
+Creates a locator matching all elements that match one or both of the two locators.
+
+Note that when both locators match something, the resulting locator will have multiple matches and violate [locator strictness](https://playwright.dev/python/docs/locators#strictness) guidelines.
 
 **Usage**
 
@@ -1252,7 +1294,6 @@ This method checks or unchecks an element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now checked or unchecked. If not, this method throws.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
@@ -1314,7 +1355,6 @@ This method taps the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#touchscreen](./page#touchscreen) to tap the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 
 If the element is detached from the DOM at any moment during the action, this method throws.
 
@@ -1339,6 +1379,12 @@ Returns the [`node.textContent`](https://developer.mozilla.org/en-US/docs/Web/AP
 ```
 def type(text, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
+
+:::warning
+
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+
+:::
 
 
 Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
@@ -1374,7 +1420,6 @@ This method unchecks the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now unchecked. If not, this method throws.
 
 If the element is detached from the DOM at any moment during the action, this method throws.

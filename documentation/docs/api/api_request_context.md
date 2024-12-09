@@ -68,6 +68,7 @@ def delete(
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -98,6 +99,7 @@ def fetch(
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       method: nil,
       multipart: nil,
       params: nil,
@@ -120,7 +122,7 @@ data = {
 api_request_context.fetch("https://example.com/api/create_book", method: 'post', data: data)
 ```
 
-The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding, by specifiying the `multipart` parameter:
 
 ```ruby
 api_request_context.fetch(
@@ -147,6 +149,7 @@ def get(
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -180,6 +183,7 @@ def head(
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -201,6 +205,7 @@ def patch(
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -222,6 +227,7 @@ def post(
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -280,6 +286,7 @@ def put(
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       multipart: nil,
       params: nil,
       timeout: nil)

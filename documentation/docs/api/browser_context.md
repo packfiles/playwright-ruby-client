@@ -4,14 +4,13 @@ sidebar_position: 10
 
 # BrowserContext
 
-- extends: [EventEmitter]
 
 BrowserContexts provide a way to operate multiple independent browser sessions.
 
 If a page opens another page, e.g. with a `window.open` call, the popup will belong to the parent page's browser
 context.
 
-Playwright allows creating "incognito" browser contexts with [Browser#new_context](./browser#new_context) method. "Incognito" browser
+Playwright allows creating isolated non-persistent browser contexts with [Browser#new_context](./browser#new_context) method. Non-persistent browser
 contexts don't write any browsing data to disk.
 
 ```ruby
@@ -274,7 +273,7 @@ def route(url, handler, times: nil)
 Routing provides the capability to modify network requests that are made by any page in the browser context. Once route
 is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.
 
-**NOTE**: [BrowserContext#route](./browser_context#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+**NOTE**: [BrowserContext#route](./browser_context#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 **Usage**
 
@@ -332,7 +331,7 @@ def route_from_har(
 
 If specified the network requests that are made in the context will be served from the HAR file. Read more about [Replaying from HAR](https://playwright.dev/python/docs/mock#replaying-from-har).
 
-Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 ## service_workers
 

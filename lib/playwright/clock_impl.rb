@@ -42,9 +42,11 @@ module Playwright
         { timeNumber: time }
       when String
         { timeString: time }
+      when DateTime
+        { timeNumber: time.to_time.to_i * 1000 }
       else
         if time.respond_to?(:utc)
-          { timeNumber: time.utc.to_i }
+          { timeNumber: time.utc.to_i * 1000 }
         else
           raise ArgumentError.new('time must be either integer, string or a Time object')
         end

@@ -4,7 +4,6 @@ sidebar_position: 10
 
 # Page
 
-- extends: [EventEmitter]
 
 Page provides methods to interact with a single tab in a [Browser](./browser), or an
 [extension background page](https://developer.chrome.com/extensions/background_pages) in Chromium. One [Browser](./browser)
@@ -115,7 +114,6 @@ This method checks an element matching `selector` by performing the following st
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now checked. If not, this method throws.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
@@ -204,7 +202,6 @@ This method double clicks an element matching `selector` by performing the follo
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to double click in the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will throw.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
@@ -319,10 +316,9 @@ page.evaluate("matchMedia('print').matches") # => false
 ```
 
 ```ruby
-page.emulate_media(colorScheme="dark")
+page.emulate_media(colorScheme: "dark")
 page.evaluate("matchMedia('(prefers-color-scheme: dark)').matches") # => true
 page.evaluate("matchMedia('(prefers-color-scheme: light)').matches") # => false
-page.evaluate("matchMedia('(prefers-color-scheme: no-preference)').matches") # => false
 ```
 
 ## eval_on_selector
@@ -834,7 +830,7 @@ def go_back(timeout: nil, waitUntil: nil)
 
 
 Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the
-last redirect. If can not go back, returns `null`.
+last redirect. If cannot go back, returns `null`.
 
 Navigate to the previous page in history.
 
@@ -846,7 +842,7 @@ def go_forward(timeout: nil, waitUntil: nil)
 
 
 Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the
-last redirect. If can not go forward, returns `null`.
+last redirect. If cannot go forward, returns `null`.
 
 Navigate to the next page in history.
 
@@ -897,7 +893,6 @@ This method hovers over an element matching `selector` by performing the followi
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to hover over the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
@@ -1042,8 +1037,7 @@ button in the page overlay or to call `playwright.resume()` in the DevTools cons
 User can inspect selectors or perform manual steps while paused. Resume will continue running the original script from
 the place it was paused.
 
-**NOTE**: This method requires Playwright to be started in a headed mode, with a falsy `headless` value in
-the [BrowserType#launch](./browser_type#launch).
+**NOTE**: This method requires Playwright to be started in a headed mode, with a falsy `headless` option.
 
 ## pdf
 
@@ -1206,7 +1200,7 @@ Once routing is enabled, every request matching the url pattern will stall unles
 
 **NOTE**: The handler will only be called for the first url if the response is a redirect.
 
-**NOTE**: [Page#route](./page#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+**NOTE**: [Page#route](./page#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 **NOTE**: [Page#route](./page#route) will not intercept the first request of a popup page. Use [BrowserContext#route](./browser_context#route) instead.
 
@@ -1262,7 +1256,7 @@ def route_from_har(
 
 If specified the network requests that are made in the page will be served from the HAR file. Read more about [Replaying from HAR](https://playwright.dev/python/docs/mock#replaying-from-har).
 
-Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 ## screenshot
 
@@ -1343,7 +1337,6 @@ This method checks or unchecks an element matching `selector` by performing the 
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now checked or unchecked. If not, this method throws.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
@@ -1463,7 +1456,6 @@ This method taps an element matching `selector` by performing the following step
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#touchscreen](./page#touchscreen) to tap the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
@@ -1500,6 +1492,12 @@ def type(
       timeout: nil)
 ```
 
+:::warning
+
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+
+:::
+
 
 Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `page.type` can be used to send
 fine-grained keyboard events. To fill values in form fields, use [Page#fill](./page#fill).
@@ -1528,7 +1526,6 @@ This method unchecks an element matching `selector` by performing the following 
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now unchecked. If not, this method throws.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
@@ -1690,6 +1687,12 @@ puts popup.title # popup is ready to use.
 ```
 def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
 ```
+
+:::warning
+
+This method is inherently racy, please use [Page#wait_for_url](./page#wait_for_url) instead.
+
+:::
 
 
 Waits for the main frame navigation and returns the main resource response. In case of multiple redirects, the navigation

@@ -99,6 +99,8 @@ module Playwright
             }
           elsif item.is_a?(Regexp)
             expected_regex(item, match_substring, normalize_white_space, ignore_case)
+          else
+            raise ArgumentError.new("Expected value provided to assertion to be a string or regex, got #{item.class}")
           end
       end
     end
@@ -358,6 +360,18 @@ module Playwright
       end
     end
     _define_negation :to_have_text
+
+    def to_match_aria_snapshot(expected, timeout: nil)
+      expect_impl(
+        'to.match.aria',
+        {
+          expectedValue: expected,
+          timeout: timeout,
+        },
+        expected,
+        'Locator expected to match Aria snapshot',
+      )
+    end
 
     def to_be_attached(attached: nil, timeout: nil)
       expect_impl(

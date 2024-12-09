@@ -70,7 +70,6 @@ This method checks an element matching `selector` by performing the following st
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now checked. If not, this method throws.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
@@ -142,8 +141,7 @@ This method double clicks an element matching `selector` by performing the follo
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
-1. Use [Page#mouse](./page#mouse) to double click in the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will throw.
+1. Use [Page#mouse](./page#mouse) to double click in the center of the element, or the specified `position`. if the first click of the `dblclick()` triggers a navigation event, this method will throw.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
@@ -682,7 +680,6 @@ This method hovers over an element matching `selector` by performing the followi
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to hover over the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
@@ -946,7 +943,6 @@ This method checks or unchecks an element matching `selector` by performing the 
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now checked or unchecked. If not, this method throws.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
@@ -1000,7 +996,6 @@ This method taps an element matching `selector` by performing the following step
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#touchscreen](./page#touchscreen) to tap the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
@@ -1037,6 +1032,12 @@ def type(
       timeout: nil)
 ```
 
+:::warning
+
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+
+:::
+
 
 Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `frame.type` can be used to
 send fine-grained keyboard events. To fill values in form fields, use [Frame#fill](./frame#fill).
@@ -1065,7 +1066,6 @@ This method checks an element matching `selector` by performing the following st
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
 1. Ensure that the element is now unchecked. If not, this method throws.
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
@@ -1131,6 +1131,12 @@ frame.wait_for_load_state # the promise resolves after "load" event.
 ```
 def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
 ```
+
+:::warning
+
+This method is inherently racy, please use [Frame#wait_for_url](./frame#wait_for_url) instead.
+
+:::
 
 
 Waits for the frame navigation and returns the main resource response. In case of multiple redirects, the navigation

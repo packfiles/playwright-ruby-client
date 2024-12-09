@@ -4,7 +4,6 @@ sidebar_position: 10
 
 # Browser
 
-- extends: [EventEmitter]
 
 A Browser is created via [BrowserType#launch](./browser_type#launch). An example of using a [Browser](./browser) to create a [Page](./page):
 
@@ -91,6 +90,7 @@ def new_context(
       acceptDownloads: nil,
       baseURL: nil,
       bypassCSP: nil,
+      clientCertificates: nil,
       colorScheme: nil,
       deviceScaleFactor: nil,
       extraHTTPHeaders: nil,
@@ -150,6 +150,7 @@ def new_page(
       acceptDownloads: nil,
       baseURL: nil,
       bypassCSP: nil,
+      clientCertificates: nil,
       colorScheme: nil,
       deviceScaleFactor: nil,
       extraHTTPHeaders: nil,
